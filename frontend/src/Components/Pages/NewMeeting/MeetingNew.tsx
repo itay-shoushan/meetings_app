@@ -4,11 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import MeetingModel from "../../../model/MeetingModel";
 import MeetingsService from "../../../Util/MeetingsService";
 import "./MeetingNew.css";
-import { Notyf } from 'notyf';
-import 'notyf/notyf.min.css';
 
 function MeetingNew(): JSX.Element {
-  const [message, setError] = useState();
+  const [message, setMessage] = useState();
   const [newMeeting, setMeeting] = useState<MeetingModel>();
   const { register, handleSubmit } = useForm<MeetingModel>();
   const [userData, setData] = useState<MeetingModel>();
@@ -24,9 +22,8 @@ function MeetingNew(): JSX.Element {
       navigate("/meeting/list");
     } catch (err: any) {
       console.log(err.message);
-    //   setError(err.message);      
-      const notyf = new Notyf();
-      notyf.error(err.message)
+      setMessage(err.message);
+      //   setError(err.message);
     }
   }
 
@@ -34,7 +31,7 @@ function MeetingNew(): JSX.Element {
 
   return (
     <div className="MeetingNew">
-        
+      <h3>{message}</h3>
       <form onSubmit={handleSubmit(send)}>
         <h2>Add Meeting</h2>
         <label>meeting code:</label>
@@ -42,7 +39,6 @@ function MeetingNew(): JSX.Element {
           type="text"
           {...register("meeting_code")}
           value={newMeeting?.meeting_code}
-          
         />
 
         <label>Start meeting:</label>
